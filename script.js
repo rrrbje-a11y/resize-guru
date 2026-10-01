@@ -1,12 +1,25 @@
+/* =====================================================
+   RESIZE GURU
+   IMAGE -> PDF ENGINE
+===================================================== */
+
 const {
-    PDFDocument,
-    degrees,
-    rgb,
-    StandardFonts
+    PDFDocument
 } = PDFLib;
 
 
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
+
 let currentTool = null;
+
+let selectedImages = [];
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 const modal =
     document.getElementById("toolModal");
@@ -20,563 +33,772 @@ const modalDescription =
 const fileInput =
     document.getElementById("fileInput");
 
-const selectedFile =
-    document.getElementById("selectedFile");
+const uploadArea =
+    document.getElementById("uploadArea");
 
-const toolOptions =
-    document.getElementById("toolOptions");
+const previewContainer =
+    document.getElementById(
+        "previewContainer"
+    );
+
+const fileCount =
+    document.getElementById(
+        "fileCount"
+    );
 
 const progress =
-    document.getElementById("progress");
+    document.getElementById(
+        "progress"
+    );
 
 
-const tools = {
+/* =====================================================
+   OPEN IMAGE TO PDF
+===================================================== */
 
-    "image-pdf": {
-        title: "Image to PDF",
-        description: "Convert one or more images into a PDF."
-    },
+function openTool(tool) {
 
-    "pdf-image": {
-        title: "PDF to Image",
-        description: "Convert PDF pages into JPG images."
-    },
+    currentTool = tool;
 
-    "merge": {
-        title: "Merge PDF",
-        description: "Combine multiple PDF files."
-    },
-
-    "split": {
-        title: "Split PDF",
-        description: "Extract selected pages from a PDF."
-    },
-
-    "rotate": {
-        title: "Rotate PDF",
-        description: "Rotate every page of your PDF."
-    },
-
-    "page-number": {
-        title: "Page Number",
-        description: "Add page numbers to your PDF."
-    },
-
-    "resize-image": {
-        title: "Resize Image",
-        description: "Resize using percentage or pixel dimensions."
-    },
-
-    "compress-image": {
-        title: "Compress Image",
-        description: "Reduce image file size."
-    },
-
-    "crop-image": {
-        title: "Crop Image",
-        description: "Crop an image."
-    },
-
-    "rotate-image": {
-        title: "Rotate Image",
-        description: "Rotate an image."
-    }
-
-};
-
-
-function openTool(name) {
-
-    currentTool = name;
-
-    const tool = tools[name];
-
-    modalTitle.textContent = tool.title;
-
-    modalDescription.textContent =
-        tool.description;
+    selectedImages = [];
 
     fileInput.value = "";
 
-    selectedFile.innerHTML = "";
+    renderPreviews();
 
-    progress.innerHTML = "";
 
-    createOptions(name);
+    if (tool === "image-pdf") {
+
+        modalTitle.textContent =
+            "Image to PDF";
+
+        modalDescription.textContent =
+            "Convert multiple JPG, PNG or WebP images into one PDF.";
+
+    }
+
 
     modal.classList.add("active");
 
 }
 
 
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
 function closeTool() {
 
     modal.classList.remove("active");
 
-}
+    selectedImages = [];
 
+    fileInput.value = "";
 
-function createOptions(tool) {
-
-    toolOptions.innerHTML = "";
-
-
-    /* IMAGE RESIZE */
-
-    if (tool === "resize-image") {
-
-        toolOptions.innerHTML = `
-
-        <div class="options-box">
-
-            <label>
-                Resize Method
-            </label>
-
-            <select id="resizeMode"
-                onchange="changeResizeMode()">
-
-                <option value="percentage">
-                    Percentage
-                </option>
-
-                <option value="pixels">
-                    Pixels
-                </option>
-
-                <option value="dimensions">
-                    Dimensions
-                </option>
-
-            </select>
-
-
-            <div id="resizeControls">
-
-                <label>
-                    Percentage
-                </label>
-
-                <input
-                    type="number"
-                    id="resizePercentage"
-                    value="50"
-                    min="1"
-                    max="500"
-                >
-
-            </div>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* IMAGE COMPRESSION */
-
-    if (tool === "compress-image") {
-
-        toolOptions.innerHTML = `
-
-        <div class="options-box">
-
-            <label>
-                Quality
-            </label>
-
-            <input
-                type="range"
-                id="imageQuality"
-                min="10"
-                max="100"
-                value="75"
-                oninput="
-                    document.getElementById('qualityValue')
-                    .textContent=this.value+'%'
-                "
-            >
-
-            <strong id="qualityValue">
-                75%
-            </strong>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* CROP */
-
-    if (tool === "crop-image") {
-
-        toolOptions.innerHTML = `
-
-        <div class="options-box">
-
-            <div class="two-inputs">
-
-                <input
-                    type="number"
-                    id="cropWidth"
-                    placeholder="Width px"
-                >
-
-                <input
-                    type="number"
-                    id="cropHeight"
-                    placeholder="Height px"
-                >
-
-            </div>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* ROTATE IMAGE */
-
-    if (tool === "rotate-image") {
-
-        toolOptions.innerHTML = `
-
-        <div class="options-box">
-
-            <label>
-                Rotation
-            </label>
-
-            <select id="imageRotation">
-
-                <option value="90">90°</option>
-                <option value="180">180°</option>
-                <option value="270">270°</option>
-
-            </select>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* PDF ROTATION */
-
-    if (tool === "rotate") {
-
-        toolOptions.innerHTML = `
-
-        <div class="options-box">
-
-            <label>
-                Rotation
-            </label>
-
-            <select id="pdfRotation">
-
-                <option value="90">90°</option>
-                <option value="180">180°</option>
-                <option value="270">270°</option>
-
-            </select>
-
-        </div>
-
-        `;
-
-    }
-
-
-    /* SPLIT */
-
-    if (tool === "split") {
-
-        toolOptions.innerHTML = `
-
-        <div class="options-box">
-
-            <label>
-                Pages
-            </label>
-
-            <input
-                type="text"
-                id="splitPages"
-                placeholder="Example: 1,3,5-7"
-            >
-
-            <small>
-                Leave empty to extract every page separately.
-            </small>
-
-        </div>
-
-        `;
-
-    }
+    renderPreviews();
 
 }
 
 
-function changeResizeMode() {
-
-    const mode =
-        document.getElementById("resizeMode").value;
-
-    const controls =
-        document.getElementById("resizeControls");
-
-
-    if (mode === "percentage") {
-
-        controls.innerHTML = `
-
-            <label>Percentage</label>
-
-            <input
-                type="number"
-                id="resizePercentage"
-                value="50"
-                min="1"
-                max="500"
-            >
-
-        `;
-
-    }
-
-
-    if (
-        mode === "pixels" ||
-        mode === "dimensions"
-    ) {
-
-        controls.innerHTML = `
-
-            <div class="two-inputs">
-
-                <input
-                    type="number"
-                    id="resizeWidth"
-                    placeholder="Width px"
-                >
-
-                <input
-                    type="number"
-                    id="resizeHeight"
-                    placeholder="Height px"
-                >
-
-            </div>
-
-            <label>
-                <input
-                    type="checkbox"
-                    id="keepRatio"
-                    checked
-                >
-                Keep aspect ratio
-            </label>
-
-        `;
-
-    }
-
-}
-
+/* =====================================================
+   FILE INPUT
+===================================================== */
 
 fileInput.addEventListener(
     "change",
-    function () {
+    function (event) {
 
         const files =
-            Array.from(fileInput.files);
+            Array.from(
+                event.target.files
+            );
 
-        if (!files.length) {
-
-            selectedFile.innerHTML = "";
-
-            return;
-
-        }
-
-        selectedFile.innerHTML =
-            files
-                .map(
-                    file =>
-                        `<div>
-                            ${file.name}
-                            (${formatSize(file.size)})
-                        </div>`
-                )
-                .join("");
+        addImages(files);
 
     }
 );
 
 
-function formatSize(bytes) {
+/* =====================================================
+   ADD IMAGES
+===================================================== */
 
-    if (!bytes) return "0 B";
+function addImages(files) {
 
-    const units = [
-        "B",
-        "KB",
-        "MB",
-        "GB"
-    ];
-
-    const index =
-        Math.floor(
-            Math.log(bytes) /
-            Math.log(1024)
+    const validFiles =
+        files.filter(
+            file =>
+                file.type === "image/jpeg" ||
+                file.type === "image/png" ||
+                file.type === "image/webp"
         );
 
-    return (
-        (bytes /
-            Math.pow(1024, index))
-            .toFixed(2)
-        + " "
-        + units[index]
-    );
 
-}
+    if (!validFiles.length) {
 
-
-async function startProcessing() {
-
-    const files =
-        Array.from(fileInput.files);
-
-    if (!files.length) {
-
-        alert("Please select a file first.");
+        alert(
+            "Please select JPG, PNG or WebP images."
+        );
 
         return;
 
     }
 
+
+    validFiles.forEach(
+        file => {
+
+            /*
+              Avoid adding the exact same
+              file multiple times.
+            */
+
+            const alreadyExists =
+                selectedImages.some(
+                    item =>
+                        item.name === file.name &&
+                        item.size === file.size &&
+                        item.lastModified === file.lastModified
+                );
+
+
+            if (!alreadyExists) {
+
+                selectedImages.push(file);
+
+            }
+
+        }
+    );
+
+
+    renderPreviews();
+
+}
+
+
+/* =====================================================
+   DRAG & DROP
+===================================================== */
+
+uploadArea.addEventListener(
+    "dragover",
+    function (event) {
+
+        event.preventDefault();
+
+        uploadArea.classList.add(
+            "dragover"
+        );
+
+    }
+);
+
+
+uploadArea.addEventListener(
+    "dragleave",
+    function () {
+
+        uploadArea.classList.remove(
+            "dragover"
+        );
+
+    }
+);
+
+
+uploadArea.addEventListener(
+    "drop",
+    function (event) {
+
+        event.preventDefault();
+
+        uploadArea.classList.remove(
+            "dragover"
+        );
+
+
+        const files =
+            Array.from(
+                event.dataTransfer.files
+            );
+
+
+        addImages(files);
+
+    }
+);
+
+
+/* =====================================================
+   RENDER PREVIEWS
+===================================================== */
+
+function renderPreviews() {
+
+    previewContainer.innerHTML = "";
+
+
+    if (!selectedImages.length) {
+
+        fileCount.textContent =
+            "No images selected.";
+
+        return;
+
+    }
+
+
+    fileCount.textContent =
+        `${selectedImages.length} image${
+            selectedImages.length > 1
+                ? "s"
+                : ""
+        } selected`;
+
+
+    selectedImages.forEach(
+        (file, index) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "preview-card";
+
+
+            const number =
+                document.createElement(
+                    "div"
+                );
+
+
+            number.className =
+                "preview-number";
+
+            number.textContent =
+                index + 1;
+
+
+            const image =
+                document.createElement(
+                    "img"
+                );
+
+
+            image.src =
+                URL.createObjectURL(
+                    file
+                );
+
+
+            image.onload =
+                () => {
+
+                    URL.revokeObjectURL(
+                        image.src
+                    );
+
+                };
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+
+            name.className =
+                "preview-name";
+
+            name.textContent =
+                file.name;
+
+
+            const controls =
+                document.createElement(
+                    "div"
+                );
+
+
+            controls.className =
+                "preview-controls";
+
+
+            const up =
+                document.createElement(
+                    "button"
+                );
+
+            up.innerHTML =
+                '<i class="fa-solid fa-arrow-up"></i>';
+
+            up.title =
+                "Move up";
+
+            up.onclick =
+                () =>
+                    moveImage(
+                        index,
+                        -1
+                    );
+
+
+            const down =
+                document.createElement(
+                    "button"
+                );
+
+            down.innerHTML =
+                '<i class="fa-solid fa-arrow-down"></i>';
+
+            down.title =
+                "Move down";
+
+            down.onclick =
+                () =>
+                    moveImage(
+                        index,
+                        1
+                    );
+
+
+            const remove =
+                document.createElement(
+                    "button"
+                );
+
+            remove.className =
+                "remove-image";
+
+            remove.innerHTML =
+                '<i class="fa-solid fa-trash"></i>';
+
+            remove.title =
+                "Remove image";
+
+            remove.onclick =
+                () =>
+                    removeImage(
+                        index
+                    );
+
+
+            controls.appendChild(up);
+
+            controls.appendChild(down);
+
+            controls.appendChild(remove);
+
+
+            card.appendChild(number);
+
+            card.appendChild(image);
+
+            card.appendChild(name);
+
+            card.appendChild(controls);
+
+
+            previewContainer.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   MOVE IMAGE
+===================================================== */
+
+function moveImage(
+    index,
+    direction
+) {
+
+    const newIndex =
+        index + direction;
+
+
+    if (
+        newIndex < 0 ||
+        newIndex >= selectedImages.length
+    ) {
+
+        return;
+
+    }
+
+
+    const temp =
+        selectedImages[index];
+
+
+    selectedImages[index] =
+        selectedImages[newIndex];
+
+
+    selectedImages[newIndex] =
+        temp;
+
+
+    renderPreviews();
+
+}
+
+
+/* =====================================================
+   REMOVE IMAGE
+===================================================== */
+
+function removeImage(index) {
+
+    selectedImages.splice(
+        index,
+        1
+    );
+
+
+    renderPreviews();
+
+}
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
+
+function clearImages() {
+
+    selectedImages = [];
+
+    fileInput.value = "";
+
+    progress.innerHTML = "";
+
+    renderPreviews();
+
+}
+
+
+/* =====================================================
+   CREATE PDF
+===================================================== */
+
+async function createImagePDF() {
+
+    if (!selectedImages.length) {
+
+        alert(
+            "Please select at least one image."
+        );
+
+        return;
+
+    }
+
+
     try {
 
         progress.innerHTML =
-            "⏳ Processing...";
-
-        let result;
+            "⏳ Creating PDF...";
 
 
-        switch (currentTool) {
-
-            case "image-pdf":
-
-                result =
-                    await imageToPDF(files);
-
-                break;
+        const pdfDoc =
+            await PDFDocument.create();
 
 
-            case "pdf-image":
-
-                await pdfToImage(files[0]);
-
-                progress.innerHTML =
-                    "✅ PDF converted successfully.";
-
-                return;
+        const pageSize =
+            document.getElementById(
+                "pageSize"
+            ).value;
 
 
-            case "merge":
-
-                result =
-                    await mergePDF(files);
-
-                break;
+        const orientation =
+            document.getElementById(
+                "orientation"
+            ).value;
 
 
-            case "split":
-
-                await splitPDF(files[0]);
-
-                progress.innerHTML =
-                    "✅ PDF split successfully.";
-
-                return;
+        const marginMM =
+            Number(
+                document.getElementById(
+                    "margin"
+                ).value
+            );
 
 
-            case "rotate":
-
-                result =
-                    await rotatePDF(files[0]);
-
-                break;
+        const imageFit =
+            document.getElementById(
+                "imageFit"
+            ).value;
 
 
-            case "page-number":
+        /*
+          1 PDF point = 1/72 inch
+          A4 = 595.28 × 841.89 points
+        */
 
-                result =
-                    await addPageNumbers(files[0]);
+        const A4_WIDTH =
+            595.28;
 
-                break;
-
-
-            case "resize-image":
-
-                result =
-                    await resizeImage(files[0]);
-
-                break;
+        const A4_HEIGHT =
+            841.89;
 
 
-            case "compress-image":
+        /*
+          Convert millimetres
+          to PDF points.
+        */
 
-                result =
-                    await compressImage(files[0]);
-
-                break;
-
-
-            case "crop-image":
-
-                result =
-                    await cropImage(files[0]);
-
-                break;
+        const margin =
+            marginMM *
+            72 /
+            25.4;
 
 
-            case "rotate-image":
+        for (
+            let i = 0;
+            i < selectedImages.length;
+            i++
+        ) {
 
-                result =
-                    await rotateImage(files[0]);
-
-                break;
+            const file =
+                selectedImages[i];
 
 
-            default:
+            progress.innerHTML =
+                `⏳ Processing image ${
+                    i + 1
+                } of ${
+                    selectedImages.length
+                }...`;
 
-                throw new Error(
-                    "This tool is not connected yet."
+
+            const image =
+                await embedImage(
+                    pdfDoc,
+                    file
                 );
 
-        }
+
+            let pageWidth;
+
+            let pageHeight;
 
 
-        if (result) {
+            /* ORIGINAL SIZE */
 
-            downloadBlob(
-                result.blob,
-                result.filename
+            if (
+                pageSize === "original"
+            ) {
+
+                const dimensions =
+                    image.scale(1);
+
+
+                pageWidth =
+                    dimensions.width +
+                    margin * 2;
+
+
+                pageHeight =
+                    dimensions.height +
+                    margin * 2;
+
+            }
+
+
+            /* A4 */
+
+            else {
+
+                if (
+                    orientation ===
+                    "landscape"
+                ) {
+
+                    pageWidth =
+                        A4_HEIGHT;
+
+                    pageHeight =
+                        A4_WIDTH;
+
+                }
+
+                else {
+
+                    pageWidth =
+                        A4_WIDTH;
+
+                    pageHeight =
+                        A4_HEIGHT;
+
+                }
+
+            }
+
+
+            const page =
+                pdfDoc.addPage(
+                    [
+                        pageWidth,
+                        pageHeight
+                    ]
+                );
+
+
+            const dimensions =
+                image.scale(1);
+
+
+            let availableWidth =
+                pageWidth -
+                margin * 2;
+
+
+            let availableHeight =
+                pageHeight -
+                margin * 2;
+
+
+            let drawWidth;
+
+            let drawHeight;
+
+            let drawX;
+
+            let drawY;
+
+
+            /* =========================
+               FILL
+            ========================= */
+
+            if (
+                imageFit === "fill"
+            ) {
+
+                drawWidth =
+                    availableWidth;
+
+                drawHeight =
+                    availableHeight;
+
+                drawX =
+                    margin;
+
+                drawY =
+                    margin;
+
+            }
+
+
+            /* =========================
+               CONTAIN
+            ========================= */
+
+            else {
+
+                const ratio =
+                    Math.min(
+
+                        availableWidth /
+                        dimensions.width,
+
+                        availableHeight /
+                        dimensions.height
+
+                    );
+
+
+                drawWidth =
+                    dimensions.width *
+                    ratio;
+
+
+                drawHeight =
+                    dimensions.height *
+                    ratio;
+
+
+                drawX =
+                    (
+                        pageWidth -
+                        drawWidth
+                    ) / 2;
+
+
+                drawY =
+                    (
+                        pageHeight -
+                        drawHeight
+                    ) / 2;
+
+            }
+
+
+            page.drawImage(
+                image,
+                {
+                    x: drawX,
+
+                    y: drawY,
+
+                    width: drawWidth,
+
+                    height: drawHeight
+                }
             );
 
         }
 
+
         progress.innerHTML =
-            "✅ Processing completed successfully.";
+            "⏳ Finalizing PDF...";
+
+
+        const pdfBytes =
+            await pdfDoc.save();
+
+
+        if (
+            !pdfBytes ||
+            pdfBytes.length === 0
+        ) {
+
+            throw new Error(
+                "PDF generation failed."
+            );
+
+        }
+
+
+        const blob =
+            new Blob(
+                [pdfBytes],
+                {
+                    type:
+                        "application/pdf"
+                }
+            );
+
+
+        downloadBlob(
+            blob,
+            "resize-guru-images.pdf"
+        );
+
+
+        progress.innerHTML =
+            "✅ PDF created and downloaded successfully.";
+
 
     }
 
@@ -584,1007 +806,127 @@ async function startProcessing() {
 
         console.error(error);
 
+
         progress.innerHTML =
-            "❌ " + error.message;
-
-    }
-
-}
-
-
-/* =====================================================
-   IMAGE → PDF
-===================================================== */
-
-async function imageToPDF(files) {
-
-    const pdfDoc =
-        await PDFDocument.create();
-
-
-    for (const file of files) {
-
-        const bytes =
-            await file.arrayBuffer();
-
-        let image;
-
-
-        if (
-            file.type === "image/jpeg" ||
-            file.type === "image/jpg"
-        ) {
-
-            image =
-                await pdfDoc.embedJpg(bytes);
-
-        }
-
-        else if (
-            file.type === "image/png"
-        ) {
-
-            image =
-                await pdfDoc.embedPng(bytes);
-
-        }
-
-        else {
-
-            throw new Error(
-                "Please upload JPG or PNG images."
+            "❌ " +
+            (
+                error.message ||
+                "Something went wrong."
             );
 
-        }
-
-
-        const dimensions =
-            image.scale(1);
-
-
-        const page =
-            pdfDoc.addPage([
-                dimensions.width,
-                dimensions.height
-            ]);
-
-
-        page.drawImage(image, {
-
-            x: 0,
-
-            y: 0,
-
-            width: dimensions.width,
-
-            height: dimensions.height
-
-        });
-
     }
-
-
-    const pdfBytes =
-        await pdfDoc.save();
-
-
-    return {
-
-        blob:
-            new Blob(
-                [pdfBytes],
-                { type: "application/pdf" }
-            ),
-
-        filename:
-            "resize-guru-images.pdf"
-
-    };
 
 }
 
 
 /* =====================================================
-   PDF → IMAGE
+   EMBED IMAGE
 ===================================================== */
 
-async function pdfToImage(file) {
-
-    /*
-      PDF.js is loaded as an ES module.
-      We dynamically import it here.
-    */
-
-    const pdfjsLib =
-        await import(
-            "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs"
-        );
-
-
-    pdfjsLib.GlobalWorkerOptions.workerSrc =
-        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.worker.min.mjs";
-
+async function embedImage(
+    pdfDoc,
+    file
+) {
 
     const bytes =
-        new Uint8Array(
-            await file.arrayBuffer()
-        );
+        await file.arrayBuffer();
 
 
-    const pdf =
-        await pdfjsLib.getDocument({
-            data: bytes
-        }).promise;
-
-
-    for (
-        let pageNumber = 1;
-        pageNumber <= pdf.numPages;
-        pageNumber++
+    if (
+        file.type ===
+        "image/jpeg"
     ) {
 
-        const page =
-            await pdf.getPage(pageNumber);
+        return await pdfDoc.embedJpg(
+            bytes
+        );
+
+    }
 
 
-        const viewport =
-            page.getViewport({
-                scale: 2
-            });
+    if (
+        file.type ===
+        "image/png"
+    ) {
+
+        return await pdfDoc.embedPng(
+            bytes
+        );
+
+    }
+
+
+    /*
+      WebP is not directly supported
+      by PDF-LIB.
+
+      Convert WebP to PNG through
+      browser canvas first.
+    */
+
+    if (
+        file.type ===
+        "image/webp"
+    ) {
+
+        const image =
+            await loadImage(file);
 
 
         const canvas =
-            document.createElement("canvas");
-
-
-        const context =
-            canvas.getContext("2d");
+            document.createElement(
+                "canvas"
+            );
 
 
         canvas.width =
-            viewport.width;
+            image.naturalWidth;
 
         canvas.height =
-            viewport.height;
+            image.naturalHeight;
 
 
-        await page.render({
-
-            canvasContext: context,
-
-            viewport: viewport
-
-        }).promise;
-
-
-        const blob =
-            await new Promise(
-                resolve =>
-                    canvas.toBlob(
-                        resolve,
-                        "image/jpeg",
-                        0.92
-                    )
+        const ctx =
+            canvas.getContext(
+                "2d"
             );
 
 
-        downloadBlob(
-            blob,
-            `resize-guru-page-${pageNumber}.jpg`
+        ctx.drawImage(
+            image,
+            0,
+            0
         );
 
-    }
 
-}
-
-
-/* =====================================================
-   MERGE PDF
-===================================================== */
-
-async function mergePDF(files) {
-
-    if (files.length < 2) {
-
-        throw new Error(
-            "Select at least two PDF files."
-        );
-
-    }
-
-
-    const merged =
-        await PDFDocument.create();
-
-
-    for (const file of files) {
-
-        const bytes =
-            await file.arrayBuffer();
-
-        const pdf =
-            await PDFDocument.load(bytes);
-
-        const pages =
-            await merged.copyPages(
-                pdf,
-                pdf.getPageIndices()
+        const pngBlob =
+            await canvasToBlob(
+                canvas,
+                "image/png",
+                1
             );
 
 
-        pages.forEach(
-            page =>
-                merged.addPage(page)
+        const pngBytes =
+            await pngBlob.arrayBuffer();
+
+
+        return await pdfDoc.embedPng(
+            pngBytes
         );
 
     }
 
 
-    const bytes =
-        await merged.save();
-
-
-    return {
-
-        blob:
-            new Blob(
-                [bytes],
-                { type: "application/pdf" }
-            ),
-
-        filename:
-            "resize-guru-merged.pdf"
-
-    };
-
-}
-
-
-/* =====================================================
-   SPLIT PDF
-===================================================== */
-
-async function splitPDF(file) {
-
-    const bytes =
-        await file.arrayBuffer();
-
-
-    const pdf =
-        await PDFDocument.load(bytes);
-
-
-    const total =
-        pdf.getPageCount();
-
-
-    let pagesText =
-        document.getElementById(
-            "splitPages"
-        ).value.trim();
-
-
-    let indexes;
-
-
-    if (!pagesText) {
-
-        indexes =
-            Array.from(
-                { length: total },
-                (_, i) => i
-            );
-
-    }
-
-    else {
-
-        indexes =
-            parsePageSelection(
-                pagesText,
-                total
-            );
-
-    }
-
-
-    for (const index of indexes) {
-
-        const newPdf =
-            await PDFDocument.create();
-
-
-        const [page] =
-            await newPdf.copyPages(
-                pdf,
-                [index]
-            );
-
-
-        newPdf.addPage(page);
-
-
-        const output =
-            await newPdf.save();
-
-
-        downloadBlob(
-
-            new Blob(
-                [output],
-                {
-                    type:
-                        "application/pdf"
-                }
-            ),
-
-            `resize-guru-page-${index + 1}.pdf`
-
-        );
-
-    }
-
-}
-
-
-function parsePageSelection(text, total) {
-
-    const result = [];
-
-
-    const parts =
-        text.split(",");
-
-
-    for (const part of parts) {
-
-        const value =
-            part.trim();
-
-
-        if (value.includes("-")) {
-
-            const [a, b] =
-                value
-                    .split("-")
-                    .map(Number);
-
-
-            if (
-                !Number.isInteger(a) ||
-                !Number.isInteger(b)
-            ) {
-
-                throw new Error(
-                    "Invalid page range."
-                );
-
-            }
-
-
-            for (
-                let i = a;
-                i <= b;
-                i++
-            ) {
-
-                if (
-                    i >= 1 &&
-                    i <= total
-                ) {
-
-                    result.push(i - 1);
-
-                }
-
-            }
-
-        }
-
-        else {
-
-            const page =
-                Number(value);
-
-
-            if (
-                Number.isInteger(page) &&
-                page >= 1 &&
-                page <= total
-            ) {
-
-                result.push(page - 1);
-
-            }
-
-        }
-
-    }
-
-
-    return [
-        ...new Set(result)
-    ];
-
-}
-
-
-/* =====================================================
-   ROTATE PDF
-===================================================== */
-
-async function rotatePDF(file) {
-
-    const bytes =
-        await file.arrayBuffer();
-
-
-    const pdf =
-        await PDFDocument.load(bytes);
-
-
-    const rotation =
-        Number(
-            document.getElementById(
-                "pdfRotation"
-            ).value
-        );
-
-
-    for (const page of pdf.getPages()) {
-
-        const existing =
-            page.getRotation().angle || 0;
-
-
-        page.setRotation(
-            degrees(
-                existing + rotation
-            )
-        );
-
-    }
-
-
-    const output =
-        await pdf.save();
-
-
-    return {
-
-        blob:
-            new Blob(
-                [output],
-                {
-                    type:
-                        "application/pdf"
-                }
-            ),
-
-        filename:
-            "resize-guru-rotated.pdf"
-
-    };
-
-}
-
-
-/* =====================================================
-   PAGE NUMBERS
-===================================================== */
-
-async function addPageNumbers(file) {
-
-    const bytes =
-        await file.arrayBuffer();
-
-
-    const pdf =
-        await PDFDocument.load(bytes);
-
-
-    const font =
-        await pdf.embedFont(
-            StandardFonts.Helvetica
-        );
-
-
-    const pages =
-        pdf.getPages();
-
-
-    pages.forEach(
-        (page, index) => {
-
-            const {
-                width
-            } = page.getSize();
-
-
-            page.drawText(
-                `${index + 1}`,
-                {
-                    x:
-                        width / 2 - 5,
-
-                    y:
-                        20,
-
-                    size:
-                        10,
-
-                    font,
-
-                    color:
-                        rgb(
-                            0.2,
-                            0.2,
-                            0.2
-                        )
-                }
-            );
-
-        }
+    throw new Error(
+        "Unsupported image format."
     );
 
-
-    const output =
-        await pdf.save();
-
-
-    return {
-
-        blob:
-            new Blob(
-                [output],
-                {
-                    type:
-                        "application/pdf"
-                }
-            ),
-
-        filename:
-            "resize-guru-numbered.pdf"
-
-    };
-
 }
 
 
 /* =====================================================
-   IMAGE RESIZE
-===================================================== */
-
-async function resizeImage(file) {
-
-    const image =
-        await loadImage(file);
-
-
-    let width =
-        image.naturalWidth;
-
-    let height =
-        image.naturalHeight;
-
-
-    const mode =
-        document.getElementById(
-            "resizeMode"
-        ).value;
-
-
-    if (mode === "percentage") {
-
-        const percentage =
-            Number(
-                document.getElementById(
-                    "resizePercentage"
-                ).value
-            );
-
-
-        width =
-            Math.round(
-                width *
-                percentage /
-                100
-            );
-
-
-        height =
-            Math.round(
-                height *
-                percentage /
-                100
-            );
-
-    }
-
-
-    else {
-
-        const newWidth =
-            Number(
-                document.getElementById(
-                    "resizeWidth"
-                ).value
-            );
-
-
-        const newHeight =
-            Number(
-                document.getElementById(
-                    "resizeHeight"
-                ).value
-            );
-
-
-        const keepRatio =
-            document.getElementById(
-                "keepRatio"
-            ).checked;
-
-
-        if (!newWidth) {
-
-            throw new Error(
-                "Enter image width."
-            );
-
-        }
-
-
-        if (keepRatio) {
-
-            width =
-                newWidth;
-
-            height =
-                Math.round(
-                    image.naturalHeight *
-                    newWidth /
-                    image.naturalWidth
-                );
-
-        }
-
-        else {
-
-            if (!newHeight) {
-
-                throw new Error(
-                    "Enter image height."
-                );
-
-            }
-
-            width =
-                newWidth;
-
-            height =
-                newHeight;
-
-        }
-
-    }
-
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        width;
-
-    canvas.height =
-        height;
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    ctx.drawImage(
-        image,
-        0,
-        0,
-        width,
-        height
-    );
-
-
-    const blob =
-        await canvasToBlob(
-            canvas,
-            "image/png",
-            1
-        );
-
-
-    return {
-
-        blob,
-
-        filename:
-            "resize-guru-resized.png"
-
-    };
-
-}
-
-
-/* =====================================================
-   IMAGE COMPRESS
-===================================================== */
-
-async function compressImage(file) {
-
-    const image =
-        await loadImage(file);
-
-
-    const quality =
-        Number(
-            document.getElementById(
-                "imageQuality"
-            ).value
-        ) / 100;
-
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        image.naturalWidth;
-
-    canvas.height =
-        image.naturalHeight;
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    ctx.drawImage(
-        image,
-        0,
-        0
-    );
-
-
-    const blob =
-        await canvasToBlob(
-            canvas,
-            "image/jpeg",
-            quality
-        );
-
-
-    return {
-
-        blob,
-
-        filename:
-            "resize-guru-compressed.jpg"
-
-    };
-
-}
-
-
-/* =====================================================
-   CROP IMAGE
-===================================================== */
-
-async function cropImage(file) {
-
-    const image =
-        await loadImage(file);
-
-
-    const cropWidth =
-        Number(
-            document.getElementById(
-                "cropWidth"
-            ).value
-        );
-
-
-    const cropHeight =
-        Number(
-            document.getElementById(
-                "cropHeight"
-            ).value
-        );
-
-
-    if (
-        !cropWidth ||
-        !cropHeight
-    ) {
-
-        throw new Error(
-            "Enter crop width and height."
-        );
-
-    }
-
-
-    if (
-        cropWidth > image.naturalWidth ||
-        cropHeight > image.naturalHeight
-    ) {
-
-        throw new Error(
-            "Crop dimensions cannot exceed image dimensions."
-        );
-
-    }
-
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        cropWidth;
-
-    canvas.height =
-        cropHeight;
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    const x =
-        (image.naturalWidth -
-            cropWidth) / 2;
-
-
-    const y =
-        (image.naturalHeight -
-            cropHeight) / 2;
-
-
-    ctx.drawImage(
-
-        image,
-
-        x,
-        y,
-
-        cropWidth,
-        cropHeight,
-
-        0,
-        0,
-
-        cropWidth,
-        cropHeight
-
-    );
-
-
-    const blob =
-        await canvasToBlob(
-            canvas,
-            "image/png",
-            1
-        );
-
-
-    return {
-
-        blob,
-
-        filename:
-            "resize-guru-cropped.png"
-
-    };
-
-}
-
-
-/* =====================================================
-   ROTATE IMAGE
-===================================================== */
-
-async function rotateImage(file) {
-
-    const image =
-        await loadImage(file);
-
-
-    const rotation =
-        Number(
-            document.getElementById(
-                "imageRotation"
-            ).value
-        );
-
-
-    const swap =
-        rotation === 90 ||
-        rotation === 270;
-
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        swap ?
-        image.naturalHeight :
-        image.naturalWidth;
-
-
-    canvas.height =
-        swap ?
-        image.naturalWidth :
-        image.naturalHeight;
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-    ctx.translate(
-        canvas.width / 2,
-        canvas.height / 2
-    );
-
-
-    ctx.rotate(
-        rotation *
-        Math.PI /
-        180
-    );
-
-
-    ctx.drawImage(
-
-        image,
-
-        -image.naturalWidth / 2,
-
-        -image.naturalHeight / 2
-
-    );
-
-
-    const blob =
-        await canvasToBlob(
-            canvas,
-            "image/png",
-            1
-        );
-
-
-    return {
-
-        blob,
-
-        filename:
-            "resize-guru-rotated.png"
-
-    };
-
-}
-
-
-/* =====================================================
-   HELPERS
+   LOAD IMAGE
 ===================================================== */
 
 function loadImage(file) {
@@ -1592,27 +934,29 @@ function loadImage(file) {
     return new Promise(
         (resolve, reject) => {
 
-            const image =
+            const img =
                 new Image();
 
 
             const url =
-                URL.createObjectURL(file);
+                URL.createObjectURL(
+                    file
+                );
 
 
-            image.onload =
+            img.onload =
                 () => {
 
                     URL.revokeObjectURL(
                         url
                     );
 
-                    resolve(image);
+                    resolve(img);
 
                 };
 
 
-            image.onerror =
+            img.onerror =
                 () => {
 
                     URL.revokeObjectURL(
@@ -1621,14 +965,14 @@ function loadImage(file) {
 
                     reject(
                         new Error(
-                            "Unable to read image."
+                            "Could not load image."
                         )
                     );
 
                 };
 
 
-            image.src =
+            img.src =
                 url;
 
         }
@@ -1636,6 +980,10 @@ function loadImage(file) {
 
 }
 
+
+/* =====================================================
+   CANVAS TO BLOB
+===================================================== */
 
 function canvasToBlob(
     canvas,
@@ -1658,6 +1006,10 @@ function canvasToBlob(
 }
 
 
+/* =====================================================
+   DOWNLOAD
+===================================================== */
+
 function downloadBlob(
     blob,
     filename
@@ -1666,7 +1018,7 @@ function downloadBlob(
     if (!blob) {
 
         throw new Error(
-            "Generated file is empty."
+            "No file was generated."
         );
 
     }
@@ -1675,14 +1027,16 @@ function downloadBlob(
     if (blob.size === 0) {
 
         throw new Error(
-            "Generated file is blank."
+            "Generated file is empty."
         );
 
     }
 
 
     const url =
-        URL.createObjectURL(blob);
+        URL.createObjectURL(
+            blob
+        );
 
 
     const link =
@@ -1694,8 +1048,13 @@ function downloadBlob(
     link.href =
         url;
 
+
     link.download =
         filename;
+
+
+    link.style.display =
+        "none";
 
 
     document.body.appendChild(
@@ -1710,9 +1069,34 @@ function downloadBlob(
 
 
     setTimeout(
-        () =>
-            URL.revokeObjectURL(url),
-        1000
+        () => {
+
+            URL.revokeObjectURL(
+                url
+            );
+
+        },
+        1500
     );
 
 }
+
+
+/* =====================================================
+   CLOSE MODAL ON BACKGROUND CLICK
+===================================================== */
+
+modal.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target === modal
+        ) {
+
+            closeTool();
+
+        }
+
+    }
+);
