@@ -1,1 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>Resize Guru - PDF & Image Tools</title>
+
+    <meta
+        name="description"
+        content="Resize Guru - Free online PDF and image tools including resize, merge, split, compress, convert, OCR and more."
+    >
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+        <div class="logo-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+
+        <div>
+            <span class="logo-name">Resize Guru</span>
+            <small>PDF & Image Tools</small>
+        </div>
+    </div>
+
+    <nav class="nav-links">
+        <a href="#tools">Tools</a>
+        <a href="#about">About</a>
+        <a href="#help">Help</a>
+    </nav>
+
+    <button class="menu-btn" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            <i class="fa-solid fa-bolt"></i>
+            Free Online PDF & Image Tools
+        </div>
+
+        <h1>
+            Your Documents.
+            <span>Made Simple.</span>
+        </h1>
+
+        <p>
+            Resize, compress, convert, merge, split and manage
+            your PDF and image files with Resize Guru.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#tools" class="primary-btn">
+                <i class="fa-solid fa-toolbox"></i>
+                Explore Tools
+            </a>
+
+            <a href="#about" class="secondary-btn">
+                Learn More
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+        <div class="hero-features">
+
+            <div>
+                <i class="fa-solid fa-shield-halved"></i>
+                Secure Processing
+            </div>
+
+            <div>
+                <i class="fa-solid fa-bolt"></i>
+                Fast Tools
+            </div>
+
+            <div>
+                <i class="fa-solid fa-download"></i>
+                Easy Download
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="hero-visual">
+
+        <div class="floating-card card-one">
+            <i class="fa-solid fa-file-pdf"></i>
+            <span>PDF Tools</span>
+        </div>
+
+        <div class="document-preview">
+
+            <div class="document-top">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+
+            <div class="document-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="document-button">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Resize Guru
+            </div>
+
+        </div>
+
+        <div class="floating-card card-two">
+            <i class="fa-solid fa-image"></i>
+            <span>Image Tools</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TOOLS ================= -->
+
+<section class="tools-section" id="tools">
+
+    <div class="section-heading">
+
+        <div class="section-label">
+            <i class="fa-solid fa-grid-2"></i>
+            ALL TOOLS
+        </div>
+
+        <h2>
+            Everything you need,
+            <span>in one place.</span>
+        </h2>
+
+        <p>
+            Powerful tools for your PDF and image files.
+        </p>
+
+    </div>
+
+
+    <!-- PDF TOOLS -->
+
+    <div class="category-title">
+
+        <div class="category-icon pdf-icon">
+            <i class="fa-solid fa-file-pdf"></i>
+        </div>
+
+        <div>
+            <h3>PDF Tools</h3>
+            <p>Convert, edit and manage PDF files</p>
+        </div>
+
+    </div>
+
+
+    <div class="tools-grid">
+
+        <div class="tool-card" onclick="openTool('image-pdf')">
+            <div class="tool-icon blue">
+                <i class="fa-solid fa-file-image"></i>
+            </div>
+            <h4>Image to PDF</h4>
+            <p>Convert images into PDF documents.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('pdf-image')">
+            <div class="tool-icon purple">
+                <i class="fa-solid fa-images"></i>
+            </div>
+            <h4>PDF to Image</h4>
+            <p>Convert PDF pages into images.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('merge')">
+            <div class="tool-icon pink">
+                <i class="fa-solid fa-object-group"></i>
+            </div>
+            <h4>Merge PDF</h4>
+            <p>Combine multiple PDF files into one.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('split')">
+            <div class="tool-icon orange">
+                <i class="fa-solid fa-scissors"></i>
+            </div>
+            <h4>Split PDF</h4>
+            <p>Split PDF into separate pages.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('compress-pdf')">
+            <div class="tool-icon green">
+                <i class="fa-solid fa-file-zipper"></i>
+            </div>
+            <h4>Compress PDF</h4>
+            <p>Reduce PDF file size.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('rotate')">
+            <div class="tool-icon cyan">
+                <i class="fa-solid fa-rotate"></i>
+            </div>
+            <h4>Rotate PDF</h4>
+            <p>Rotate PDF pages easily.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('watermark')">
+            <div class="tool-icon yellow">
+                <i class="fa-solid fa-droplet"></i>
+            </div>
+            <h4>Watermark PDF</h4>
+            <p>Add text or image watermarks.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('sign')">
+            <div class="tool-icon red">
+                <i class="fa-solid fa-signature"></i>
+            </div>
+            <h4>Sign PDF</h4>
+            <p>Add your electronic signature.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('ocr')">
+            <div class="tool-icon teal">
+                <i class="fa-solid fa-eye"></i>
+            </div>
+            <h4>OCR PDF</h4>
+            <p>Extract text from scanned documents.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('pdf-word')">
+            <div class="tool-icon blue">
+                <i class="fa-solid fa-file-word"></i>
+            </div>
+            <h4>PDF to Word</h4>
+            <p>Convert PDF files to editable Word documents.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('pdf-excel')">
+            <div class="tool-icon green">
+                <i class="fa-solid fa-file-excel"></i>
+            </div>
+            <h4>PDF to Excel</h4>
+            <p>Extract tables into Excel.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('pdf-ppt')">
+            <div class="tool-icon orange">
+                <i class="fa-solid fa-file-powerpoint"></i>
+            </div>
+            <h4>PDF to PowerPoint</h4>
+            <p>Convert PDF into presentations.</p>
+            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+        </div>
+
+    </div>
+
+
+    <!-- IMAGE TOOLS -->
+
+    <div class="category-title image-category">
+
+        <div class="category-icon image-icon">
+            <i class="fa-solid fa-image"></i>
+        </div>
+
+        <div>
+            <h3>Image Tools</h3>
+            <p>Resize, compress and convert images</p>
+        </div>
+
+    </div>
+
+
+    <div class="tools-grid">
+
+        <div class="tool-card" onclick="openTool('resize-image')">
+            <div class="tool-icon purple">
+                <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
+            </div>
+
+            <h4>Resize Image</h4>
+
+            <p>
+                Resize by percentage, pixels,
+                dimensions and more.
+            </p>
+
+            <span>
+                Use Tool
+                <i class="fa-solid fa-arrow-right"></i>
+            </span>
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('compress-image')">
+
+            <div class="tool-icon green">
+                <i class="fa-solid fa-compress"></i>
+            </div>
+
+            <h4>Compress Image</h4>
+
+            <p>
+                Reduce image file size while
+                maintaining quality.
+            </p>
+
+            <span>
+                Use Tool
+                <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('crop-image')">
+
+            <div class="tool-icon orange">
+                <i class="fa-solid fa-crop"></i>
+            </div>
+
+            <h4>Crop Image</h4>
+
+            <p>
+                Crop images to your required
+                dimensions.
+            </p>
+
+            <span>
+                Use Tool
+                <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+        </div>
+
+
+        <div class="tool-card" onclick="openTool('convert-image')">
+
+            <div class="tool-icon blue">
+                <i class="fa-solid fa-repeat"></i>
+            </div>
+
+            <h4>Convert Image</h4>
+
+            <p>
+                Convert JPG, PNG, WebP and
+                other formats.
+            </p>
+
+            <span>
+                Use Tool
+                <i class="fa-solid fa-arrow-right"></i>
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section class="about-section" id="about">
+
+    <div class="about-card">
+
+        <div class="about-icon">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+
+        <div>
+
+            <div class="section-label">
+                ABOUT RESIZE GURU
+            </div>
+
+            <h2>
+                Simple tools.
+                <span>Better documents.</span>
+            </h2>
+
+            <p>
+                Resize Guru is an online document and image utility
+                platform designed to make everyday file management
+                simple, fast and accessible.
+            </p>
+
+            <p class="owner">
+                Created by <strong>ER. Meraj Ansari</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= HELP ================= -->
+
+<section class="help-section" id="help">
+
+    <div class="section-heading">
+
+        <div class="section-label">
+            <i class="fa-solid fa-circle-question"></i>
+            SUPPORT
+        </div>
+
+        <h2>
+            Need help?
+        </h2>
+
+        <p>
+            We're here to make your experience easier.
+        </p>
+
+    </div>
+
+
+    <div class="support-grid">
+
+        <button class="support-card" onclick="showMessage('Help Center')">
+            <i class="fa-solid fa-circle-question"></i>
+            <strong>Help Center</strong>
+            <span>Find answers to common questions.</span>
+        </button>
+
+
+        <button class="support-card" onclick="showMessage('Feedback')">
+            <i class="fa-solid fa-comment-dots"></i>
+            <strong>Send Feedback</strong>
+            <span>Tell us how we can improve.</span>
+        </button>
+
+
+        <button class="support-card" onclick="showMessage('Rating')">
+            <i class="fa-solid fa-star"></i>
+            <strong>Rate Resize Guru</strong>
+            <span>Share your experience.</span>
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <div class="footer-brand">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+
+                <div>
+                    <span class="logo-name">Resize Guru</span>
+                    <small>PDF & Image Tools</small>
+                </div>
+
+            </div>
+
+            <p>
+                Powerful and simple tools for your everyday documents.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#tools">Tools</a>
+            <a href="#about">About</a>
+            <a href="#help">Help</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 Resize Guru.
+        Created by <strong>ER. Meraj Ansari</strong>.
+
+    </div>
+
+</footer>
+
+
+<!-- ================= TOOL MODAL ================= -->
+
+<div class="modal" id="toolModal">
+
+    <div class="modal-box">
+
+        <button class="close-modal" onclick="closeTool()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="modal-icon">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
+
+        <h2 id="modalTitle">
+            Select a file
+        </h2>
+
+        <p id="modalDescription">
+            Upload your file to get started.
+        </p>
+
+
+        <label class="upload-area">
+
+            <input
+                type="file"
+                id="fileInput"
+                onchange="fileSelected(event)"
+            >
+
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+            <strong>
+                Click to upload
+            </strong>
+
+            <span>
+                or drag and drop your file here
+            </span>
+
+        </label>
+
+
+        <div id="selectedFile"></div>
+
+
+        <button
+            class="process-btn"
+            onclick="startProcessing()"
+        >
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Start Processing
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
