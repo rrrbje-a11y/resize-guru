@@ -8,7 +8,7 @@
 
     <meta
         name="description"
-        content="Resize Guru - Free online PDF and image tools including resize, merge, split, compress, convert, OCR and more."
+        content="Resize Guru - Free online PDF and image tools."
     >
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,8 +29,6 @@
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
-
 <header class="navbar">
 
     <div class="logo">
@@ -50,14 +48,8 @@
         <a href="#help">Help</a>
     </nav>
 
-    <button class="menu-btn" onclick="toggleMenu()">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-
 </header>
 
-
-<!-- ================= HERO ================= -->
 
 <section class="hero">
 
@@ -65,7 +57,7 @@
 
         <div class="badge">
             <i class="fa-solid fa-bolt"></i>
-            Free Online PDF & Image Tools
+            Free PDF & Image Tools
         </div>
 
         <h1>
@@ -92,72 +84,16 @@
 
         </div>
 
-        <div class="hero-features">
-
-            <div>
-                <i class="fa-solid fa-shield-halved"></i>
-                Secure Processing
-            </div>
-
-            <div>
-                <i class="fa-solid fa-bolt"></i>
-                Fast Tools
-            </div>
-
-            <div>
-                <i class="fa-solid fa-download"></i>
-                Easy Download
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="hero-visual">
-
-        <div class="floating-card card-one">
-            <i class="fa-solid fa-file-pdf"></i>
-            <span>PDF Tools</span>
-        </div>
-
-        <div class="document-preview">
-
-            <div class="document-top">
-                <i class="fa-solid fa-file-lines"></i>
-            </div>
-
-            <div class="document-lines">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-
-            <div class="document-button">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                Resize Guru
-            </div>
-
-        </div>
-
-        <div class="floating-card card-two">
-            <i class="fa-solid fa-image"></i>
-            <span>Image Tools</span>
-        </div>
-
     </div>
 
 </section>
 
-
-<!-- ================= TOOLS ================= -->
 
 <section class="tools-section" id="tools">
 
     <div class="section-heading">
 
         <div class="section-label">
-            <i class="fa-solid fa-grid-2"></i>
             ALL TOOLS
         </div>
 
@@ -167,13 +103,11 @@
         </h2>
 
         <p>
-            Powerful tools for your PDF and image files.
+            Select a tool and process your file directly in your browser.
         </p>
 
     </div>
 
-
-    <!-- PDF TOOLS -->
 
     <div class="category-title">
 
@@ -183,7 +117,7 @@
 
         <div>
             <h3>PDF Tools</h3>
-            <p>Convert, edit and manage PDF files</p>
+            <p>Process and manage PDF files</p>
         </div>
 
     </div>
@@ -196,8 +130,8 @@
                 <i class="fa-solid fa-file-image"></i>
             </div>
             <h4>Image to PDF</h4>
-            <p>Convert images into PDF documents.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Convert images into PDF.</p>
+            <span>Use Tool →</span>
         </div>
 
 
@@ -206,8 +140,8 @@
                 <i class="fa-solid fa-images"></i>
             </div>
             <h4>PDF to Image</h4>
-            <p>Convert PDF pages into images.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Convert PDF pages to JPG.</p>
+            <span>Use Tool →</span>
         </div>
 
 
@@ -216,8 +150,8 @@
                 <i class="fa-solid fa-object-group"></i>
             </div>
             <h4>Merge PDF</h4>
-            <p>Combine multiple PDF files into one.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Combine multiple PDF files.</p>
+            <span>Use Tool →</span>
         </div>
 
 
@@ -226,18 +160,8 @@
                 <i class="fa-solid fa-scissors"></i>
             </div>
             <h4>Split PDF</h4>
-            <p>Split PDF into separate pages.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-
-
-        <div class="tool-card" onclick="openTool('compress-pdf')">
-            <div class="tool-icon green">
-                <i class="fa-solid fa-file-zipper"></i>
-            </div>
-            <h4>Compress PDF</h4>
-            <p>Reduce PDF file size.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Extract selected PDF pages.</p>
+            <span>Use Tool →</span>
         </div>
 
 
@@ -246,74 +170,22 @@
                 <i class="fa-solid fa-rotate"></i>
             </div>
             <h4>Rotate PDF</h4>
-            <p>Rotate PDF pages easily.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <p>Rotate PDF pages.</p>
+            <span>Use Tool →</span>
         </div>
 
 
-        <div class="tool-card" onclick="openTool('watermark')">
-            <div class="tool-icon yellow">
-                <i class="fa-solid fa-droplet"></i>
-            </div>
-            <h4>Watermark PDF</h4>
-            <p>Add text or image watermarks.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-
-
-        <div class="tool-card" onclick="openTool('sign')">
-            <div class="tool-icon red">
-                <i class="fa-solid fa-signature"></i>
-            </div>
-            <h4>Sign PDF</h4>
-            <p>Add your electronic signature.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-
-
-        <div class="tool-card" onclick="openTool('ocr')">
-            <div class="tool-icon teal">
-                <i class="fa-solid fa-eye"></i>
-            </div>
-            <h4>OCR PDF</h4>
-            <p>Extract text from scanned documents.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-
-
-        <div class="tool-card" onclick="openTool('pdf-word')">
-            <div class="tool-icon blue">
-                <i class="fa-solid fa-file-word"></i>
-            </div>
-            <h4>PDF to Word</h4>
-            <p>Convert PDF files to editable Word documents.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-
-
-        <div class="tool-card" onclick="openTool('pdf-excel')">
+        <div class="tool-card" onclick="openTool('page-number')">
             <div class="tool-icon green">
-                <i class="fa-solid fa-file-excel"></i>
+                <i class="fa-solid fa-list-ol"></i>
             </div>
-            <h4>PDF to Excel</h4>
-            <p>Extract tables into Excel.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
-        </div>
-
-
-        <div class="tool-card" onclick="openTool('pdf-ppt')">
-            <div class="tool-icon orange">
-                <i class="fa-solid fa-file-powerpoint"></i>
-            </div>
-            <h4>PDF to PowerPoint</h4>
-            <p>Convert PDF into presentations.</p>
-            <span>Use Tool <i class="fa-solid fa-arrow-right"></i></span>
+            <h4>Page Number</h4>
+            <p>Add page numbers to PDF.</p>
+            <span>Use Tool →</span>
         </div>
 
     </div>
 
-
-    <!-- IMAGE TOOLS -->
 
     <div class="category-title image-category">
 
@@ -323,7 +195,7 @@
 
         <div>
             <h3>Image Tools</h3>
-            <p>Resize, compress and convert images</p>
+            <p>Resize, crop, rotate and compress images</p>
         </div>
 
     </div>
@@ -332,6 +204,7 @@
     <div class="tools-grid">
 
         <div class="tool-card" onclick="openTool('resize-image')">
+
             <div class="tool-icon purple">
                 <i class="fa-solid fa-up-right-and-down-left-from-center"></i>
             </div>
@@ -339,14 +212,11 @@
             <h4>Resize Image</h4>
 
             <p>
-                Resize by percentage, pixels,
-                dimensions and more.
+                Percentage, pixels and dimensions.
             </p>
 
-            <span>
-                Use Tool
-                <i class="fa-solid fa-arrow-right"></i>
-            </span>
+            <span>Use Tool →</span>
+
         </div>
 
 
@@ -359,14 +229,10 @@
             <h4>Compress Image</h4>
 
             <p>
-                Reduce image file size while
-                maintaining quality.
+                Reduce image file size.
             </p>
 
-            <span>
-                Use Tool
-                <i class="fa-solid fa-arrow-right"></i>
-            </span>
+            <span>Use Tool →</span>
 
         </div>
 
@@ -380,35 +246,27 @@
             <h4>Crop Image</h4>
 
             <p>
-                Crop images to your required
-                dimensions.
+                Crop an image by pixels.
             </p>
 
-            <span>
-                Use Tool
-                <i class="fa-solid fa-arrow-right"></i>
-            </span>
+            <span>Use Tool →</span>
 
         </div>
 
 
-        <div class="tool-card" onclick="openTool('convert-image')">
+        <div class="tool-card" onclick="openTool('rotate-image')">
 
             <div class="tool-icon blue">
-                <i class="fa-solid fa-repeat"></i>
+                <i class="fa-solid fa-rotate"></i>
             </div>
 
-            <h4>Convert Image</h4>
+            <h4>Rotate Image</h4>
 
             <p>
-                Convert JPG, PNG, WebP and
-                other formats.
+                Rotate your image.
             </p>
 
-            <span>
-                Use Tool
-                <i class="fa-solid fa-arrow-right"></i>
-            </span>
+            <span>Use Tool →</span>
 
         </div>
 
@@ -416,8 +274,6 @@
 
 </section>
 
-
-<!-- ================= ABOUT ================= -->
 
 <section class="about-section" id="about">
 
@@ -439,13 +295,8 @@
             </h2>
 
             <p>
-                Resize Guru is an online document and image utility
-                platform designed to make everyday file management
-                simple, fast and accessible.
-            </p>
-
-            <p class="owner">
-                Created by <strong>ER. Meraj Ansari</strong>
+                Resize Guru is an online PDF and image utility platform
+                created by ER. Meraj Ansari.
             </p>
 
         </div>
@@ -454,115 +305,44 @@
 
 </section>
 
-
-<!-- ================= HELP ================= -->
 
 <section class="help-section" id="help">
 
     <div class="section-heading">
 
         <div class="section-label">
-            <i class="fa-solid fa-circle-question"></i>
             SUPPORT
         </div>
 
-        <h2>
-            Need help?
-        </h2>
+        <h2>Need help?</h2>
 
         <p>
-            We're here to make your experience easier.
+            Help, feedback and rating options will be connected here.
         </p>
-
-    </div>
-
-
-    <div class="support-grid">
-
-        <button class="support-card" onclick="showMessage('Help Center')">
-            <i class="fa-solid fa-circle-question"></i>
-            <strong>Help Center</strong>
-            <span>Find answers to common questions.</span>
-        </button>
-
-
-        <button class="support-card" onclick="showMessage('Feedback')">
-            <i class="fa-solid fa-comment-dots"></i>
-            <strong>Send Feedback</strong>
-            <span>Tell us how we can improve.</span>
-        </button>
-
-
-        <button class="support-card" onclick="showMessage('Rating')">
-            <i class="fa-solid fa-star"></i>
-            <strong>Rate Resize Guru</strong>
-            <span>Share your experience.</span>
-        </button>
 
     </div>
 
 </section>
 
 
-<!-- ================= FOOTER ================= -->
-
 <footer>
 
-    <div class="footer-content">
-
-        <div class="footer-brand">
-
-            <div class="logo">
-
-                <div class="logo-icon">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                </div>
-
-                <div>
-                    <span class="logo-name">Resize Guru</span>
-                    <small>PDF & Image Tools</small>
-                </div>
-
-            </div>
-
-            <p>
-                Powerful and simple tools for your everyday documents.
-            </p>
-
-        </div>
-
-
-        <div class="footer-links">
-
-            <a href="#tools">Tools</a>
-            <a href="#about">About</a>
-            <a href="#help">Help</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-
-        </div>
-
-    </div>
-
-
     <div class="copyright">
-
         © 2026 Resize Guru.
         Created by <strong>ER. Meraj Ansari</strong>.
-
     </div>
 
 </footer>
 
 
-<!-- ================= TOOL MODAL ================= -->
+<!-- TOOL MODAL -->
 
 <div class="modal" id="toolModal">
 
     <div class="modal-box">
 
         <button class="close-modal" onclick="closeTool()">
-            <i class="fa-solid fa-xmark"></i>
+            ×
         </button>
 
         <div class="modal-icon">
@@ -574,8 +354,11 @@
         </h2>
 
         <p id="modalDescription">
-            Upload your file to get started.
+            Upload your file.
         </p>
+
+
+        <div id="toolOptions"></div>
 
 
         <label class="upload-area">
@@ -583,7 +366,7 @@
             <input
                 type="file"
                 id="fileInput"
-                onchange="fileSelected(event)"
+                multiple
             >
 
             <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -593,7 +376,7 @@
             </strong>
 
             <span>
-                or drag and drop your file here
+                or drag and drop
             </span>
 
         </label>
@@ -607,13 +390,24 @@
             onclick="startProcessing()"
         >
             <i class="fa-solid fa-wand-magic-sparkles"></i>
-            Start Processing
+            Process File
         </button>
+
+        <div id="progress"></div>
 
     </div>
 
 </div>
 
+
+<!-- REAL PDF ENGINES -->
+
+<script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.10.38/pdf.min.mjs"
+    type="module">
+</script>
 
 <script src="script.js"></script>
 
