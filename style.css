@@ -1007,3 +1007,78 @@ footer {
     }
 
 }
+
+.options-box {
+    margin: 20px 0;
+    padding: 18px;
+
+    background: #f7f8fc;
+
+    border-radius: 14px;
+
+    text-align: left;
+}
+
+.options-box label {
+    display: block;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+.options-box input[type="number"],
+.options-box input[type="text"],
+.options-box select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #dfe3ec;
+
+    border-radius: 9px;
+
+    background: white;
+
+    outline: none;
+
+    font-family: inherit;
+
+    margin-bottom: 10px;
+}
+
+.options-box input:focus,
+.options-box select:focus {
+    border-color: #5b5bf7;
+}
+
+.two-inputs {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+.options-box small {
+    color: #687386;
+
+    font-size: 10px;
+}
+
+#progress {
+    margin-top: 15px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+@media (max-width: 520px) {
+
+    .two-inputs {
+        grid-template-columns: 1fr;
+    }
+
+}
